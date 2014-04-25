@@ -51,30 +51,78 @@ describe('gulp-mustache-plus', function () {
         stream.end();
     });
 
-    it('should produce correct html output when rendering included partials', function (done) {
+  it('should produce correct html output when rendering included partials', function (done) {
 
-        var expectedFile = makeExpectedFile('test/expected/outputWithPartial.html');
-        var srcFile = makeFixtureFile('test/fixtures/okWithPartial.mustache');
-        var partialFile = makeFixtureFile('test/fixtures/partial.mustache');
+    var expectedFile = makeExpectedFile('test/expected/outputWithPartial.html');
+    var srcFile = makeFixtureFile('test/fixtures/okWithPartial.mustache');
+    var partialFile = makeFixtureFile('test/fixtures/partial.mustache');
 
-        var stream = mustache({ title: 'gulp-mustache-plus', nested: 'I am nested' }, {}, { partial: partialFile.contents.toString() });
+    var stream = mustache({ title: 'gulp-mustache-plus', nested: 'I am nested' }, {}, { partial: partialFile.contents.toString() });
 
-        stream.on('error', function (err) {
-            should.exist(err);
-            done(err);
-        });
-
-        stream.on('data', function (newFile) {
-
-            should.exist(newFile);
-            should.exist(newFile.contents);
-            String(newFile.contents).should.equal(String(expectedFile.contents));
-            done();
-        });
-
-        stream.write(srcFile);
-        stream.end();
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
     });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+      String(newFile.contents).should.equal(String(expectedFile.contents));
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
+  it('should produce correct html output when rendering included partials', function (done) {
+
+    var expectedFile = makeExpectedFile('test/expected/outputWithPartial.html');
+    var srcFile = makeFixtureFile('test/fixtures/okWithPartial.mustache');
+
+    var stream = mustache({ title: 'gulp-mustache-plus', nested: 'I am nested' }, {}, { partial: 'test/fixtures/partial.mustache' });
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+      String(newFile.contents).should.equal(String(expectedFile.contents));
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
+  it('should produce correct js output when rendering included partials', function (done) {
+
+    var expectedFile = makeExpectedFile('test/expected/code.js');
+    var srcFile = makeFixtureFile('test/fixtures/code.mustache');
+
+    var stream = mustache({value: 1}, {file_prepend: "\n"}, { code: 'test/fixtures/code.js' });
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+      String(newFile.contents).should.equal(String(expectedFile.contents));
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
 
     it('should produce output file with correct chosen extension', function (done) {
 
