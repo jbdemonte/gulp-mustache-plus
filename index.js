@@ -1,9 +1,9 @@
 'use strict';
 
-var through = require('through2');
-var gutil = require('gulp-util');
-var mustache = require('mustache');
-var fs = require('fs');
+var through = require("through2");
+var gutil = require("gulp-util");
+var mustache = require("mustache");
+var fs = require("fs");
 
 function isFile(str) {
   return !str.match("\n") && fs.existsSync(str);
@@ -11,10 +11,11 @@ function isFile(str) {
 
 module.exports = function (view, options, partials) {
   options = options || {};
-  options.extension = options.extension || '.html';
+  options.extension = options.extension || ".html";
   partials = partials || {};
 
   var key,
+    ns = "gulp-mustache-plus",
     viewError = null,
     keys = [],
     new_partials = {};
@@ -25,9 +26,9 @@ module.exports = function (view, options, partials) {
   }
 
   // if view is string, interpret as path to json filename
-  if (typeof view === 'string') {
+  if (typeof view === "string") {
     try {
-      view = JSON.parse(fs.readFileSync(view, 'utf8'));
+      view = JSON.parse(fs.readFileSync(view, "utf8"));
     } catch (e) {
       viewError = e;
     }
@@ -37,22 +38,16 @@ module.exports = function (view, options, partials) {
     var self = this;
 
     if (file.isNull()) {
-      this.push(file);
+      self.push(file);
       return cb();
     }
 
     if (file.isStream()) {
-      this.emit(
-        'error',
-        new gutil.PluginError('gulp-mustache-plus', 'Streaming not supported')
-      );
+      self.emit("error", new gutil.PluginError(ns, "Streaming not supported"));
     }
 
     if (viewError) {
-      this.emit(
-        'error',
-        new gutil.PluginError('gulp-mustache-plus', viewError.toString())
-      );
+      self.emit("error", new gutil.PluginError(ns, viewError.toString()));
     }
 
 
@@ -62,7 +57,7 @@ module.exports = function (view, options, partials) {
         if (isFile(new_partials[key])) {
           fs.readFile(new_partials[key], function (err, data) {
             if (err) {
-              throw new Error("Error reading file (" + new_partials[key] + ")");
+              self.emit("error", new gutil.PluginError(ns, "Error reading file (" + new_partials[key] + ")"));
             } else {
               new_partials[key] = (options.file_prepend || "") + data.toString();
             }
