@@ -1,6 +1,6 @@
 {
   "name": "gulp-mustache-plus",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "A plugin for Gulp that renders mustache templates",
   "keywords": [
     "gulpplugin",
