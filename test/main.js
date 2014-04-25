@@ -26,13 +26,13 @@ var makeFixtureFile = function (path) {
     return makeFile(path, 'test/fixtures');
 };
 
-describe('gulp-mustache', function () {
+describe('gulp-mustache-plus', function () {
 
     it('should produce correct html output when rendering a file', function (done) {
 
         var expectedFile = makeExpectedFile('test/expected/output.html');
         var srcFile = makeFixtureFile('test/fixtures/ok.mustache');
-        var stream = mustache({ title: 'gulp-mustache' });
+        var stream = mustache({ title: 'gulp-mustache-plus' });
 
         stream.on('error', function (err) {
             should.exist(err);
@@ -57,7 +57,7 @@ describe('gulp-mustache', function () {
         var srcFile = makeFixtureFile('test/fixtures/okWithPartial.mustache');
         var partialFile = makeFixtureFile('test/fixtures/partial.mustache');
 
-        var stream = mustache({ title: 'gulp-mustache', nested: 'I am nested' }, {}, { partial: partialFile.contents.toString() });
+        var stream = mustache({ title: 'gulp-mustache-plus', nested: 'I am nested' }, {}, { partial: partialFile.contents.toString() });
 
         stream.on('error', function (err) {
             should.exist(err);
@@ -81,7 +81,7 @@ describe('gulp-mustache', function () {
         var expectedFile = makeExpectedFile('test/expected/output.html');
         var srcFile = makeFixtureFile('test/fixtures/ok.mustache');
 
-        var stream = mustache({ title: 'gulp-mustache' }, { extension: '.txt' });
+        var stream = mustache({ title: 'gulp-mustache-plus' }, { extension: '.txt' });
 
         stream.on('error', function (err) {
             should.exist(err);
@@ -159,7 +159,7 @@ describe('gulp-mustache', function () {
     //         contents: fs.readFileSync('test/fixtures/nok.mustache')
     //     });
 
-    //     var stream = mustache({ title: 'gulp-mustache' });
+    //     var stream = mustache({ title: 'gulp-mustache-plus' });
 
     //     stream.on('error', function (err) {
     //         should.exist(err);
